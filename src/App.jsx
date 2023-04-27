@@ -9,7 +9,7 @@ import Chat from './pages/chat'
 import Users from './pages/users'
 import Nav from './Nav'
 
-export const BASE = 'http://localhost:3001'
+export const BASE = 'https://aschatexpress.onrender.com/'
 export const socket = io(BASE) 
 export const Data = createContext()
 
