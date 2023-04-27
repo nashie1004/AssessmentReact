@@ -1,0 +1,84 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-decoration: none;
+}
+body{
+    background: rgb(9, 17, 73);
+    min-height: 100vh;
+
+    button{
+        background: lightcoral;
+        color: white;
+        outline: none;
+        border: 1px solid lightcoral;
+        padding: .5rem 1.5rem;
+        font-size: 1.2rem;
+    }
+    input{
+        font-size: 1.2rem;
+        padding: .5rem;
+        border: none;
+        outline: none;
+        background: none;
+        color: white;
+        border: 1px solid white;
+    }
+    img{
+        max-width: 50px;
+        max-height: 50px;
+        object-fit: cover;
+    }
+
+    .App{
+        .Nav{
+            min-height: 10vh;
+            display: flex;
+            padding: .5rem;
+            justify-content: flex-end;
+            gap: .5rem;
+            align-items: center;
+            border-bottom: 1px solid black;
+            
+            div{
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                margin-right: auto;
+            }
+        }
+        .Register, .Login, .Chat, .Home, .Users{
+            min-height: 90vh;
+            padding: .5rem;
+        }
+        .Chat{
+            .messages-container{
+                .owner{
+                    padding: .5rem;
+                    display: flex;
+                    background: rgb(32, 192, 32);
+                    align-items: center;
+                }
+                .to{
+                    padding: .5rem;
+                    display: flex;
+                    align-items: center;
+                    background: rgb(19, 141, 172);
+                }
+            }
+        }
+        .Users{
+            .users-row{
+                margin-bottom: .5rem;
+                h2{
+                    display: flex;
+                    align-items: center;
+                    gap: .5rem;
+                }
+            }
+        }
+    }
+}
