@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useContext } from "react"
-import { Data } from "./App"
+import { Data,  } from "./App"
 
 export default function Nav() {
   const {login, setLogin, currentLoggedInUserInfo, setCurrentLoggedInUserInfo} = useContext(Data)
+  const redirect = useNavigate();
 
   return (
     <div className="Nav">
@@ -20,6 +21,7 @@ export default function Nav() {
               document.cookie = "profile_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
               setLogin(false)
               setCurrentLoggedInUserInfo({})
+              redirect('/login')
             }}>Logout</button>
           </>
         ) : (

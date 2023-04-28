@@ -9,12 +9,14 @@ export default function Chat() {
   const savedMessagesUseRef = useRef([]);
   const params = useParams();
 
+  const owner = document.cookie.split(';')[1].split('=')[1]
+  const to = document.cookie.split(';')[1].split('=')[1] === params.id.split('-')[0] ? params.id.split('-')[1] : params.id.split('-')[0];
+
   socket.off('sendMessageToClient').on('sendMessageToClient', data => {
     setMessages(prev => {
-      savedMessagesUseRef.current = [...prev, data]
-      
-      return [...prev, data]
-    })
+        savedMessagesUseRef.current = [...prev, data]
+        return [...prev, data]
+      })
   })
 
   socket.off('saveConvo').on('saveConvo', data => {
@@ -28,7 +30,7 @@ export default function Chat() {
     if (currentMessage !== ''){
       
       socket.emit('sendMessageToServer', {
-        name: currentLoggedInUserInfo.name,
+        name: to,
         message: currentMessage, 
         date: new Date().toLocaleTimeString(), room: params.id,
       })
@@ -41,16 +43,21 @@ export default function Chat() {
     if (document.cookie !== ''){
       socket.emit('joinRoom', params.id)
 
-      fetch(BASE + `/getInitialMessages/${document.cookie.split(';')[1].split('=')[1]}`).then(res => 
+      fetch(BASE + `/getInitialMessages/${owner}/${to}`).then(res => 
         res.json()).then(data => {
-        setMessages(data.user.messages)
+          if (!data.user.history.hasOwnProperty(to)){
+            data.user.history[to] = []
+            setMessages(data.user.history[to])
+          } else {
+            setMessages(data.user.history[to])
+          }
       })
   
       return async () => {
         socket.emit('disconnectCleanup', {
           room: params.id,
-          owner: document.cookie.split(';')[1].split('=')[1],
-          to: document.cookie.split(';')[1].split('=')[1] === params.id.split('-')[0] ? params.id.split('-')[1] : params.id.split('-')[0],
+          owner: owner,
+          to: to,
           messages: savedMessagesUseRef.current
         })
       }
@@ -68,7 +75,7 @@ export default function Chat() {
           <button onClick={handleSubmit}>Send Message</button>
           <div className='messages-container'>
             {
-              messages.map((item, i) => {
+              messages && messages.map((item, i) => {
                 return <div key={i} className={document.cookie.split(';')[1].split('=')[1] === item.name ? "owner" : "to"}>
                   {document.cookie.split(';')[1].split('=')[1] === item.name ? 'You' : item.name}: {item.message} - {item.date}
                 </div>
